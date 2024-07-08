@@ -1,16 +1,6 @@
-// visualizer.dart
-import 'dart:io';
-import 'dart:typed_data';
-import 'dart:ui' as ui;
-import 'package:ar_flutter_plugin/managers/ar_anchor_manager.dart';
-import 'package:ar_flutter_plugin/managers/ar_location_manager.dart';
-import 'package:ar_flutter_plugin/managers/ar_object_manager.dart';
-import 'package:ar_flutter_plugin/managers/ar_session_manager.dart';
-import 'package:augmented_reality_application/defect_solutions.dart';
 import 'package:flutter/material.dart';
-import 'package:ar_flutter_plugin/ar_flutter_plugin.dart';
-import 'package:path_provider/path_provider.dart';
-import 'package:flutter/rendering.dart';
+import 'ar_visualizer_screen.dart';
+import 'wood_colors_screen.dart';
 
 class Visualizer extends StatefulWidget {
   @override
@@ -18,46 +8,55 @@ class Visualizer extends StatefulWidget {
 }
 
 class _VisualizerState extends State<Visualizer> {
-  ARSessionManager? arSessionManager;
-  ARObjectManager? arObjectManager;
-  ARAnchorManager? arAnchorManager;
-  ARLocationManager? arLocationManager;
-  GlobalKey _globalKey = GlobalKey();
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Visualizer'),
-      ),
       body: Stack(
         children: [
-          RepaintBoundary(
-            key: _globalKey,
-            child: ARView(
-              onARViewCreated: onARViewCreated,
-            ),
-          ),
-          Positioned(
-            bottom: 20,
-            left: 0,
-            right: 0,
-            child: Center(
-              child: ElevatedButton(
-                onPressed: captureImage,
-                child: Text(
-                  'CAPTURE IMAGE',
-                  style: TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.white,
-                  ),
-                ),
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.blue, // Button background color
-                  padding: EdgeInsets.symmetric(horizontal: 32, vertical: 12),
+          // Background image
+          Container(
+            decoration: BoxDecoration(
+              image: DecorationImage(
+                image: AssetImage('assets/background.jpg'), // Your background image
+                fit: BoxFit.cover,
+                colorFilter: ColorFilter.mode(
+                  Colors.black.withOpacity(0.2), // Dark overlay
+                  BlendMode.darken,
                 ),
               ),
+            ),
+          ),
+          // Content
+          Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                buildVisualizerButton(
+                  context,
+                  'assets/ar.jpg',
+                  'Apply & visualize our whole line of paints directly on your wall with AR',
+                  'START',
+                      () => Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => ARVisualizerScreen(),
+                    ),
+                  ),
+                ),
+                SizedBox(height: 20),
+                buildVisualizerButton(
+                  context,
+                  'assets/woodcolors.jpg',
+                  'Take a picture of a wooden object like a chair and then\nchange its color',
+                  'START',
+                      () => Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => WoodColorsScreen(),
+                    ),
+                  ),
+                ),
+              ],
             ),
           ),
         ],
@@ -65,45 +64,70 @@ class _VisualizerState extends State<Visualizer> {
     );
   }
 
-  void onARViewCreated(
-      ARSessionManager arSessionManager,
-      ARObjectManager arObjectManager,
-      ARAnchorManager arAnchorManager,
-      ARLocationManager arLocationManager,
-      ) {
-    this.arSessionManager = arSessionManager;
-    this.arObjectManager = arObjectManager;
-    this.arAnchorManager = arAnchorManager;
-    this.arLocationManager = arLocationManager;
-
-    arSessionManager.onInitialize(
-      showFeaturePoints: false,
-      showPlanes: true,
-      customPlaneTexturePath: "Images/triangle.png",
-      showWorldOrigin: true,
-    );
-  }
-
-  Future<void> captureImage() async {
-    try {
-      RenderRepaintBoundary boundary = _globalKey.currentContext!.findRenderObject() as RenderRepaintBoundary;
-      ui.Image image = await boundary.toImage(pixelRatio: 3.0);
-      ByteData? byteData = await image.toByteData(format: ui.ImageByteFormat.png);
-      Uint8List pngBytes = byteData!.buffer.asUint8List();
-
-      final directory = await getApplicationDocumentsDirectory();
-      final imagePath = '${directory.path}/scanned_wall.png';
-      File imgFile = File(imagePath);
-      await imgFile.writeAsBytes(pngBytes);
-
-      Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (context) => DefectSolutions(defect: Defect('Scanned Wall', 'Wall with defect', imagePath)),
+  Widget buildVisualizerButton(BuildContext context, String imagePath, String description, String buttonText, VoidCallback onPressed) {
+    return Card(
+      elevation: 6,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(15),
+      ),
+      child: GestureDetector(
+        onTap: onPressed,
+        child: Container(
+          height: 150,
+          width: MediaQuery.of(context).size.width * 0.8,
+          child: Row(
+            children: [
+              ClipRRect(
+                borderRadius: BorderRadius.horizontal(left: Radius.circular(15)),
+                child: Image.asset(
+                  imagePath,
+                  width: 100,
+                  height: double.infinity,
+                  fit: BoxFit.cover,
+                ),
+              ),
+              Expanded(
+                child: Padding(
+                  padding: const EdgeInsets.all(10.0),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        description,
+                        style: TextStyle(
+                          fontSize: 13,
+                          // fontWeight: FontWeight.bold,
+                          color: Colors.black,
+                          // backgroundColor: Colors.black,
+                        ),
+                      ),
+                      // SizedBox(height: 5),
+                      Align(
+                        alignment: Alignment.centerRight,
+                        child: ElevatedButton(
+                          onPressed: onPressed,
+                          child: Text(buttonText),
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.blue,
+                            foregroundColor: Colors.white,
+                            padding: EdgeInsets.symmetric(horizontal: 20, vertical: 0),
+                            textStyle: TextStyle(
+                              fontSize: 10,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.white,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ],
+          ),
         ),
-      );
-    } catch (e) {
-      print(e);
-    }
+      ),
+    );
   }
 }
