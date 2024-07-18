@@ -34,6 +34,7 @@ class _VisualizerState extends State<Visualizer> {
                 buildVisualizerButton(
                   context,
                   'assets/ar.jpg',
+                  'AR VISUALIZER\n'
                   'Apply & visualize our whole line of paints directly on your wall with AR',
                   'START',
                       () => Navigator.push(
@@ -47,6 +48,7 @@ class _VisualizerState extends State<Visualizer> {
                 buildVisualizerButton(
                   context,
                   'assets/woodcolors.jpg',
+                  'WOOD COLORS\n'
                   'Take a picture of a wooden object like a chair and then\nchange its color',
                   'START',
                       () => Navigator.push(

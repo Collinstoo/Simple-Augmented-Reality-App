@@ -6,7 +6,15 @@ class ARVisualizerScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('AR Visualizer'),
+        backgroundColor: Colors.white,
+        centerTitle: true,
+        title: Text('AR VISUALIZER'),
+        titleTextStyle: TextStyle(
+          fontSize: 17,
+          fontWeight: FontWeight.bold,
+          color: Colors.black,
+        ),
+        iconTheme: IconThemeData(color: Colors.blue),
       ),
       body: ARVisualizerBody(),
     );
