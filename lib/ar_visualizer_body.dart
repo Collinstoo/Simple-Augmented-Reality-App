@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'defect_solutions.dart'; // Ensure this import is correct
 
 class ARVisualizerBody extends StatefulWidget {
   const ARVisualizerBody({super.key});
@@ -54,41 +56,48 @@ class _ARVisualizerBodyState extends State<ARVisualizerBody> {
 
       // Handle response
       String responseString = response.body;
-      if (responseString == '1' || responseString == '0') {
-        String defectMessage = responseString == '1' ? 'Peeling' : 'Hole';
-
-        // Generate a random recommendation (for demonstration purposes)
-        List<String> recommendations = [
-          "Apply primer",
-          "Use waterproof paint",
-          "Fill cracks",
-          "Apply anti-mold treatment"
-        ];
-        String recommendation = recommendations[DateTime.now().millisecondsSinceEpoch % recommendations.length];
-
-        // Show popup with the response
-        showDialog(
-          context: context,
-          builder: (context) {
-            return AlertDialog(
-              title: Text(defectMessage),
-              content: Text('Recommended Solution: $recommendation'),
-              actions: [
-                TextButton(
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                  },
-                  child: const Text('OK'),
-                ),
-              ],
-            );
-          },
-        );
+      String defectMessage;
+      if (responseString == '1') {
+        defectMessage = 'Peeling';
+      } else if (responseString == '0') {
+        defectMessage = 'Hole';
+      } else if (responseString == '2') {
+        defectMessage = 'Normal';
       } else {
         throw Exception('Invalid response from server');
       }
+
+      // Show toast message
+      Fluttertoast.showToast(
+        msg: defectMessage,
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.BOTTOM,
+        timeInSecForIosWeb: 1,
+        backgroundColor: Colors.black54,
+        textColor: Colors.white,
+        fontSize: 16.0,
+      );
+
+      // Navigate to defect_solutions.dart
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => DefectSolutions(
+            defectType: defectMessage,
+          ),
+        ),
+      );
     } catch (e) {
       print(e);
+      Fluttertoast.showToast(
+        msg: 'An error occurred',
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.BOTTOM,
+        timeInSecForIosWeb: 1,
+        backgroundColor: Colors.black54,
+        textColor: Colors.white,
+        fontSize: 16.0,
+      );
     }
   }
 }
