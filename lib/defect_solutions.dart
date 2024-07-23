@@ -1,50 +1,60 @@
-// defect_solutions.dart
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:image/image.dart' as img;
 
-class Defect {
-  final String title;
-  final String description;
-  final String imagePath;
-
-  Defect(this.title, this.description, this.imagePath);
-}
-
 class DefectSolutions extends StatefulWidget {
-  final Defect defect;
+  final String defectType;
 
-  const DefectSolutions({super.key, required this.defect});
+  const DefectSolutions({super.key, required this.defectType});
 
   @override
   _DefectSolutionsState createState() => _DefectSolutionsState();
 }
 
 class _DefectSolutionsState extends State<DefectSolutions> {
-  img.Image? _originalImage;
-  img.Image? _filteredImage;
-  late File _imageFile;
+  late List<PaintRecommendation> recommendations;
 
   @override
   void initState() {
     super.initState();
-    _loadImage();
+    recommendations = _getRecommendations(widget.defectType);
   }
 
-  Future<void> _loadImage() async {
-    _imageFile = File(widget.defect.imagePath);
-    final bytes = await _imageFile.readAsBytes();
-    setState(() {
-      _originalImage = img.decodeImage(bytes);
-      _filteredImage = _originalImage;
-    });
-  }
+  List<PaintRecommendation> _getRecommendations(String defectType) {
+    List<PaintRecommendation> allRecommendations = [
+      PaintRecommendation(
+        title: 'Primer Paint',
+        description: 'Apply primer to prepare the wall.',
+        imagePath: 'assets/ar.jpg',
+      ),
+      PaintRecommendation(
+        title: 'Waterproof Paint',
+        description: 'Use waterproof paint to prevent moisture damage.',
+        imagePath: 'assets/ar.jpg',
+      ),
+      PaintRecommendation(
+        title: 'Crack Filler',
+        description: 'Fill cracks with this filler.',
+        imagePath: 'assets/ar.jpg',
+      ),
+      PaintRecommendation(
+        title: 'Anti-Mold Treatment',
+        description: 'Apply anti-mold treatment to prevent mold growth.',
+        imagePath: 'assets/ar.jpg',
+      ),
+    ];
 
-  void _applyFilter(img.Image Function(img.Image) filter) {
-    setState(() {
-      _filteredImage = filter(_originalImage!);
-    });
+    switch (defectType) {
+      case 'Peeling':
+        return allRecommendations.where((rec) => rec.title != 'Crack Filler').toList();
+      case 'Hole':
+        return allRecommendations.where((rec) => rec.title != 'Anti-Mold Treatment').toList();
+      case 'Normal':
+        return allRecommendations;
+      default:
+        return [];
+    }
   }
 
   @override
@@ -53,49 +63,37 @@ class _DefectSolutionsState extends State<DefectSolutions> {
       appBar: AppBar(
         title: const Text('Defect Solutions'),
       ),
-      body: Column(
-        children: [
-          if (_filteredImage != null)
-            Expanded(
-              child: Image.memory(Uint8List.fromList(img.encodePng(_filteredImage!))),
+      body: ListView.builder(
+        padding: const EdgeInsets.all(8),
+        itemCount: recommendations.length,
+        itemBuilder: (context, index) {
+          return Card(
+            child: ListTile(
+              leading: Image.asset(recommendations[index].imagePath),
+              title: Text(recommendations[index].title),
+              subtitle: Text(recommendations[index].description),
+              onTap: () {
+                // Handle card tap if needed
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(content: Text('Tapped on ${recommendations[index].title}')),
+                );
+              },
             ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              ElevatedButton(
-                onPressed: () => _applyFilter((image) => img.grayscale(image)),
-                child: const Text('Grayscale'),
-              ),
-              ElevatedButton(
-                onPressed: () => _applyFilter((image) => img.invert(image)),
-                child: const Text('Invert'),
-              ),
-              ElevatedButton(
-                onPressed: () => _applyFilter((image) => img.sepia(image)),
-                child: const Text('Sepia'),
-              ),
-            ],
-          ),
-          Expanded(
-            child: ListView(
-              padding: const EdgeInsets.all(8),
-              children: const [
-                ListTile(
-                  leading: Icon(Icons.recommend),
-                  title: Text('Recommendation 1'),
-                  subtitle: Text('This is the recommendation for defect 1.'),
-                ),
-                ListTile(
-                  leading: Icon(Icons.recommend),
-                  title: Text('Recommendation 2'),
-                  subtitle: Text('This is the recommendation for defect 2.'),
-                ),
-                // Add more recommendations as needed
-              ],
-            ),
-          ),
-        ],
+          );
+        },
       ),
     );
   }
+}
+
+class PaintRecommendation {
+  final String title;
+  final String description;
+  final String imagePath;
+
+  PaintRecommendation({
+    required this.title,
+    required this.description,
+    required this.imagePath,
+  });
 }
