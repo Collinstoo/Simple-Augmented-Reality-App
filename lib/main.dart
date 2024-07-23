@@ -1,15 +1,16 @@
 import 'package:flutter/material.dart';
 import 'visualizer.dart'; // Ensure this path is correct
 import 'defect_solutions.dart'; // Ensure this path is correct
-import 'package:ar_flutter_plugin/ar_flutter_plugin.dart';
 import 'package:salomon_bottom_bar/salomon_bottom_bar.dart';
 
-void main() => runApp(MaterialApp(
+void main() => runApp(const MaterialApp(
   home: BottomNavBar(),
   debugShowCheckedModeBanner: false,
 ));
 
 class BottomNavBar extends StatefulWidget {
+  const BottomNavBar({super.key});
+
   @override
   _BottomNavBarState createState() => _BottomNavBarState();
 }
@@ -18,11 +19,11 @@ class _BottomNavBarState extends State<BottomNavBar> {
   int _currentIndex = 0;
 
   final List<Widget> _pages = [
-    PlaceholderWidget(Colors.pink), // Placeholder for the first page
-    PlaceholderWidget(Colors.blue), // Placeholder for the second page
-    Visualizer(),
+    const PlaceholderWidget(Colors.pink), // Placeholder for the first page
+    const PlaceholderWidget(Colors.blue), // Placeholder for the second page
+    const Visualizer(),
     DefectSolutions(defect: Defect('Placeholder', 'Placeholder description', 'assets/placeholder.png')),
-    PlaceholderWidget(Colors.green), // Placeholder for the fifth page
+    const PlaceholderWidget(Colors.green), // Placeholder for the fifth page
   ];
 
   @override
@@ -38,28 +39,28 @@ class _BottomNavBarState extends State<BottomNavBar> {
         },
         items: [
           SalomonBottomBarItem(
-            icon: Icon(Icons.home, color: Colors.red,),
-            title: Text('Home'),
+            icon: const Icon(Icons.home, color: Colors.red,),
+            title: const Text('Home'),
             selectedColor: Colors.red,
           ),
           SalomonBottomBarItem(
-            icon: Icon(Icons.color_lens, color: Colors.deepPurple,),
-            title: Text('Colors'),
+            icon: const Icon(Icons.color_lens, color: Colors.deepPurple,),
+            title: const Text('Colors'),
             selectedColor: Colors.deepPurple,
           ),
           SalomonBottomBarItem(
-            icon: Icon(Icons.camera_alt_rounded, color: Colors.indigo,),
-            title: Text('Visualizer'),
+            icon: const Icon(Icons.camera_alt_rounded, color: Colors.indigo,),
+            title: const Text('Visualizer'),
             selectedColor: Colors.indigo,
           ),
           SalomonBottomBarItem(
-            icon: Icon(Icons.format_paint, color: Colors.green,),
-            title: Text('Defect Solutions'),
+            icon: const Icon(Icons.format_paint, color: Colors.green,),
+            title: const Text('Defect Solutions'),
             selectedColor: Colors.green,
           ),
           SalomonBottomBarItem(
-            icon: Icon(Icons.shopping_cart, color: Colors.orange,),
-            title: Text('Cart'),
+            icon: const Icon(Icons.shopping_cart, color: Colors.orange,),
+            title: const Text('Cart'),
             selectedColor: Colors.orange,
           ),
         ],
@@ -72,7 +73,7 @@ class _BottomNavBarState extends State<BottomNavBar> {
 class PlaceholderWidget extends StatelessWidget {
   final Color color;
 
-  PlaceholderWidget(this.color);
+  const PlaceholderWidget(this.color, {super.key});
 
   @override
   Widget build(BuildContext context) {

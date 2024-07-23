@@ -3,6 +3,8 @@ import 'ar_visualizer_screen.dart';
 import 'wood_colors_screen.dart';
 
 class Visualizer extends StatefulWidget {
+  const Visualizer({super.key});
+
   @override
   _VisualizerState createState() => _VisualizerState();
 }
@@ -17,7 +19,7 @@ class _VisualizerState extends State<Visualizer> {
           Container(
             decoration: BoxDecoration(
               image: DecorationImage(
-                image: AssetImage('assets/background.jpg'), // Your background image
+                image: const AssetImage('assets/background.jpg'), // Your background image
                 fit: BoxFit.cover,
                 colorFilter: ColorFilter.mode(
                   Colors.black.withOpacity(0.2), // Dark overlay
@@ -40,11 +42,11 @@ class _VisualizerState extends State<Visualizer> {
                       () => Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => ARVisualizerScreen(),
+                      builder: (context) => const ARVisualizerScreen(),
                     ),
                   ),
                 ),
-                SizedBox(height: 20),
+                const SizedBox(height: 20),
                 buildVisualizerButton(
                   context,
                   'assets/woodcolors.jpg',
@@ -54,7 +56,7 @@ class _VisualizerState extends State<Visualizer> {
                       () => Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => WoodColorsScreen(),
+                      builder: (context) => const WoodColorsScreen(),
                     ),
                   ),
                 ),
@@ -74,13 +76,13 @@ class _VisualizerState extends State<Visualizer> {
       ),
       child: GestureDetector(
         onTap: onPressed,
-        child: Container(
+        child: SizedBox(
           height: 150,
           width: MediaQuery.of(context).size.width * 0.8,
           child: Row(
             children: [
               ClipRRect(
-                borderRadius: BorderRadius.horizontal(left: Radius.circular(15)),
+                borderRadius: const BorderRadius.horizontal(left: Radius.circular(15)),
                 child: Image.asset(
                   imagePath,
                   width: 100,
@@ -97,7 +99,7 @@ class _VisualizerState extends State<Visualizer> {
                     children: [
                       Text(
                         description,
-                        style: TextStyle(
+                        style: const TextStyle(
                           fontSize: 13,
                           // fontWeight: FontWeight.bold,
                           color: Colors.black,
@@ -109,17 +111,17 @@ class _VisualizerState extends State<Visualizer> {
                         alignment: Alignment.centerRight,
                         child: ElevatedButton(
                           onPressed: onPressed,
-                          child: Text(buttonText),
                           style: ElevatedButton.styleFrom(
                             backgroundColor: Colors.blue,
                             foregroundColor: Colors.white,
-                            padding: EdgeInsets.symmetric(horizontal: 20, vertical: 0),
-                            textStyle: TextStyle(
+                            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 0),
+                            textStyle: const TextStyle(
                               fontSize: 10,
                               fontWeight: FontWeight.bold,
                               color: Colors.white,
                             ),
                           ),
+                          child: Text(buttonText),
                         ),
                       ),
                     ],

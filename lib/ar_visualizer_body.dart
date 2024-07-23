@@ -1,13 +1,12 @@
-import 'dart:io';
 import 'dart:typed_data';
-import 'dart:ui' as ui;
-import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
 class ARVisualizerBody extends StatefulWidget {
+  const ARVisualizerBody({super.key});
+
   @override
   _ARVisualizerBodyState createState() => _ARVisualizerBodyState();
 }
@@ -21,17 +20,17 @@ class _ARVisualizerBodyState extends State<ARVisualizerBody> {
       body: Center(
         child: ElevatedButton(
           onPressed: () => captureImage(),
-          child: Text(
+          style: ElevatedButton.styleFrom(
+            backgroundColor: Colors.blue,
+            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 0),
+          ),
+          child: const Text(
             'CAPTURE IMAGE',
             style: TextStyle(
               fontSize: 13,
               fontWeight: FontWeight.bold,
               color: Colors.white,
             ),
-          ),
-          style: ElevatedButton.styleFrom(
-            backgroundColor: Colors.blue,
-            padding: EdgeInsets.symmetric(horizontal: 20, vertical: 0),
           ),
         ),
       ),
@@ -79,7 +78,7 @@ class _ARVisualizerBodyState extends State<ARVisualizerBody> {
                   onPressed: () {
                     Navigator.of(context).pop();
                   },
-                  child: Text('OK'),
+                  child: const Text('OK'),
                 ),
               ],
             );

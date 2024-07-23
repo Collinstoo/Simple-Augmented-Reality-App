@@ -15,7 +15,7 @@ class Defect {
 class DefectSolutions extends StatefulWidget {
   final Defect defect;
 
-  DefectSolutions({required this.defect});
+  const DefectSolutions({super.key, required this.defect});
 
   @override
   _DefectSolutionsState createState() => _DefectSolutionsState();
@@ -51,7 +51,7 @@ class _DefectSolutionsState extends State<DefectSolutions> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Defect Solutions'),
+        title: const Text('Defect Solutions'),
       ),
       body: Column(
         children: [
@@ -64,22 +64,22 @@ class _DefectSolutionsState extends State<DefectSolutions> {
             children: [
               ElevatedButton(
                 onPressed: () => _applyFilter((image) => img.grayscale(image)),
-                child: Text('Grayscale'),
+                child: const Text('Grayscale'),
               ),
               ElevatedButton(
                 onPressed: () => _applyFilter((image) => img.invert(image)),
-                child: Text('Invert'),
+                child: const Text('Invert'),
               ),
               ElevatedButton(
                 onPressed: () => _applyFilter((image) => img.sepia(image)),
-                child: Text('Sepia'),
+                child: const Text('Sepia'),
               ),
             ],
           ),
           Expanded(
             child: ListView(
-              padding: EdgeInsets.all(8),
-              children: [
+              padding: const EdgeInsets.all(8),
+              children: const [
                 ListTile(
                   leading: Icon(Icons.recommend),
                   title: Text('Recommendation 1'),

@@ -1,13 +1,15 @@
 import 'package:flutter/material.dart';
 
 class WoodColorsScreen extends StatelessWidget {
+  const WoodColorsScreen({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Wood Colors'),
+        title: const Text('Wood Colors'),
       ),
-      body: Center(
+      body: const Center(
         child: Text('Wood Colors Screen'),
       ),
     );
