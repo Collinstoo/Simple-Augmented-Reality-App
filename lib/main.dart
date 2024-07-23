@@ -22,7 +22,7 @@ class _BottomNavBarState extends State<BottomNavBar> {
     const PlaceholderWidget(Colors.pink), // Placeholder for the first page
     const PlaceholderWidget(Colors.blue), // Placeholder for the second page
     const Visualizer(),
-    DefectSolutions(defectType: 'Placeholder'),
+    const DefectSolutions(defectType: 'Placeholder'),
     const PlaceholderWidget(Colors.green), // Placeholder for the fifth page
   ];
 

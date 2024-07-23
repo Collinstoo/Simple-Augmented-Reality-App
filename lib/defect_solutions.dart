@@ -1,7 +1,4 @@
-import 'dart:io';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:image/image.dart' as img;
 
 class DefectSolutions extends StatefulWidget {
   final String defectType;
@@ -61,7 +58,8 @@ class _DefectSolutionsState extends State<DefectSolutions> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Defect Solutions'),
+        title: const Text('DEFECT SOLUTIONS'),
+        centerTitle: true,
       ),
       body: ListView.builder(
         padding: const EdgeInsets.all(8),
