@@ -49,7 +49,7 @@ class _ARVisualizerBodyState extends State<ARVisualizerBody> {
 
       // Send POST request to the endpoint
       final response = await http.post(
-        Uri.parse('https://6ec8-102-219-210-106.ngrok-free.app/predict/'),
+        Uri.parse('https://bd8c-102-219-210-106.ngrok-free.app/predict/'),
         headers: {'Content-Type': 'application/json'},
         body: json.encode({'image': base64Image}),
       );
